@@ -1,0 +1,105 @@
+/* Aboutus.css */
+
+/* Main container for the About Us page */
+.about-us-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #F4F4F4;
+    color: #333;
+  }
+  
+  /* Hero section style */
+  .hero-section {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .hero-section h1 {
+    font-size: 36px;
+    color: #2EC0F9; /* Primary color */
+  }
+  
+  .hero-section p {
+    font-size: 18px;
+    color: #67AAF9; /* Light blue */
+  }
+  
+  /* Flexbox layout for the content boxes */
+  .content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  
+  .box {
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #9BBDF9; /* Light blue box background */
+  }
+  
+  .box h2 {
+    font-size: 24px;
+    color: #FFF; /* White text */
+    margin-bottom: 10px;
+  }
+  
+  .box p, .box ul {
+    font-size: 16px;
+    color: #FFF; /* White text */
+  }
+  
+  /* Social links section */
+  .social-links ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .social-links ul li {
+    margin-right: 15px;
+  }
+  
+  .social-links a {
+    font-size: 18px;
+    color: #F28F3B; /* Orange for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .social-links a:hover {
+    color: #FFD5C2; /* Light orange for hover effect */
+  }
+  
+  /* FAQ section */
+  .faq-section {
+    margin-top: 50px;
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .faq-section h2 {
+    font-size: 28px;
+    color: #2EC0F9;
+    margin-bottom: 20px;
+  }
+  
+  .faq-item {
+    margin-bottom: 15px;
+  }
+  
+  .faq-item h3 {
+    font-size: 20px;
+    color: #67AAF9;
+  }
+  
+  .faq-item p {
+    font-size: 16px;
+    color: #333;
+  }
+  

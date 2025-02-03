@@ -1,0 +1,103 @@
+/* VoterDashboard.css */
+
+/* Main container */
+.voter-dashboard-container {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  background-color: #F4F4F4;
+  color: #333;
+}
+
+/* Hero section */
+.voter-dashboard-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.voter-dashboard-hero .section-title {
+  font-size: 36px;
+  color: #2EC0F9;
+}
+
+.voter-dashboard-hero .section-margin {
+  font-size: 18px;
+  color: #67AAF9;
+}
+
+/* Navigation buttons */
+.navigation-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.nav-button {
+  background-color: #2EC0F9;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  text-transform: uppercase;
+}
+
+.nav-button:hover {
+  background-color: #67AAF9;
+}
+
+/* Active Polls Section */
+.active-polls, .voting-history, .constituency-info {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #9BBDF9;
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 24px;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-actions {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
+.vote-button {
+  background-color: #F28F3B;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.vote-button:hover {
+  background-color: #FFD5C2;
+}
+
+/* Candidate list styling */
+.candidate-list {
+  padding-left: 20px;
+  color: black;
+}
+
+/* History Cards */
+.history-card, .constituency-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  padding: 15px;
+}

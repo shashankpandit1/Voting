@@ -1,0 +1,22 @@
+.cast-vote-container {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .cast-vote-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .vote-card {
+    width: 400px;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .vote-button {
+    margin-top: 20px;
+    width: 100%;
+  }
+  
