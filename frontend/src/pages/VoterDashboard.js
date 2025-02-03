@@ -35,7 +35,7 @@ const VoterDashboard = () => {
   }, [navigate]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/poll/getPoll')
+    fetch(`${process.env.REACT_APP_API_URL}/api/poll/getPoll`)
       .then((res) => res.json())
       .then((data) => setPolls(data))
       .catch((error) => console.error('Error fetching polls:', error));

@@ -62,7 +62,7 @@ const OfficerDashboard = () => {
     const fetchVoterData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/vote/voters"
+          `${process.env.REACT_APP_API_URL}/api/vote/voters`
         );
         const voters = response.data;
 
@@ -92,7 +92,7 @@ const OfficerDashboard = () => {
     const fetchCandidates = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/candidates"
+          `${process.env.REACT_APP_API_URL}/api/candidates`
         );
         setCandidates(response.data); // Assuming API returns an array of candidates
       } catch (error) {
@@ -107,7 +107,7 @@ const OfficerDashboard = () => {
     const fetchElections = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/poll/getPoll"
+          `${process.env.REACT_APP_API_URL}/api/poll/getPoll`
         );
         const electionsData = response.data;
 
@@ -137,7 +137,7 @@ const OfficerDashboard = () => {
   const createElection = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/poll/createPoll",
+        "${process.env.REACT_APP_API_URL}/api/poll/createPoll",
         {
           title: newElectionTitle,
           description: newElectionDescription,

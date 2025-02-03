@@ -38,7 +38,7 @@ const LoginPage = () => {
     setLoading(true);
     try {
       // Endpoint URL based on role
-      const response = await axios.post(`http://localhost:5000/api/${role === 'voter' ? 'auth/login' : 'admin/login'}`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/${role === 'voter' ? 'auth/login' : 'admin/login'}`, {
         identifier,
       });
 
@@ -74,7 +74,7 @@ const LoginPage = () => {
     setLoading(true);
     try {
       // Endpoint URL based on role
-      const response = await axios.post(`http://localhost:5000/api/${role === 'voter' ? 'auth/verify-otp' : 'admin/verify-otp'}`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/${role === 'voter' ? 'auth/verify-otp' : 'admin/verify-otp'}`, {
         identifier,
         otp,
       });

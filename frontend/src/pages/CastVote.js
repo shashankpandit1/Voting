@@ -29,7 +29,7 @@ const CastVote = () => {
     if (voterId) {
       const fetchVoterDetails = async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/vote/getVoter/${voterId}`); // Use voterId in the URL
+          const response = await fetch(`${process.env.REACT_APP_API_URL}/api/vote/getVoter/${voterId}`); // Use voterId in the URL
           const data = await response.json();
           setVoterDetails(data); // Store the fetched voter details in state
         } catch (error) {
@@ -46,7 +46,7 @@ const CastVote = () => {
     const fetchCandidates = async () => {
       setLoading(true);
       try {
-        const response = await fetch('http://localhost:5000/api/candidates');
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/api/candidates`);
         const data = await response.json();
         setCandidates(data);
       } catch (error) {
@@ -72,7 +72,7 @@ const CastVote = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/vote/cast', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/vote/cast`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
