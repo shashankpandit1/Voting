@@ -16,6 +16,7 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -31,9 +32,13 @@ const OfficerDashboard = () => {
   const [showVoterList, setShowVoterList] = useState(false);
   const [candidates, setCandidates] = useState([]);
   const [elections, setElections] = useState([]);
- 
 
-  
+  const [openCreateElectionModal, setOpenCreateElectionModal] = useState(false);
+  const [newElectionTitle, setNewElectionTitle] = useState("");
+  const [newElectionStartDate, setNewElectionStartDate] = useState("");
+  const [newElectionEndDate, setNewElectionEndDate] = useState("");
+  const [newElectionDescription, setNewElectionDescription] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,35 +106,57 @@ const OfficerDashboard = () => {
   useEffect(() => {
     const fetchElections = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/poll/getPoll");
+        const response = await axios.get(
+          "http://localhost:5000/api/poll/getPoll"
+        );
         const electionsData = response.data;
-  
-        // Add status to each election based on the end date
+
         const updatedElections = electionsData.map((election) => {
           const currentDate = new Date();
           const endDate = new Date(election.endDate);
           let status = "Upcoming";
-  
+
           if (currentDate > endDate) {
             status = "Completed";
           } else if (currentDate < endDate) {
             status = "Ongoing";
           }
-  
+
           return { ...election, status };
         });
-  
+
         setElections(updatedElections);
       } catch (error) {
         console.error("Error fetching election data:", error);
       }
     };
-  
+
     fetchElections();
   }, []);
-  
 
-
+  const createElection = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/poll/createPoll",
+        {
+          title: newElectionTitle,
+          description: newElectionDescription,
+          startDate: newElectionStartDate,
+          endDate: newElectionEndDate,
+        }
+      );
+      alert("Election Created Successfully!");
+      setOpenCreateElectionModal(false);
+      setNewElectionTitle("");
+      setNewElectionDescription("");
+      setNewElectionStartDate("");
+      setNewElectionEndDate("");
+      // fetchElections();
+    } catch (error) {
+      console.error("Error creating election:", error);
+      alert("Failed to create election!");
+    }
+  };
 
   const securityEvents = [
     {
@@ -204,34 +231,87 @@ const OfficerDashboard = () => {
 
       {/* Election Management Section */}
       {section === "elections" && (
-  <Card className="dashboard-section">
-    <CardContent>
-      <Typography variant="h6">Manage Elections</Typography>
-      <Button variant="outlined">Create New Election</Button>
-      <Box className="card-list">
-        <Typography variant="body1" mt={2}>
-          Election List:
-        </Typography>
-        <List>
-          {elections.length > 0 ? (
-            elections.map((election) => (
-              <ListItem key={election._id}>
-                <ListItemText
-                  primary={`${election.title} - Status: ${election.status}`}
+        <Card className="dashboard-section">
+          <CardContent>
+            <Typography variant="h6">Manage Elections</Typography>
+            {/* Create Election Button */}
+            <Button
+              variant="outlined"
+              onClick={() => setOpenCreateElectionModal(true)}
+            >
+              Create New Election
+            </Button>
+            {openCreateElectionModal && (
+              <Box className="create-election-modal">
+                <Typography variant="h6">Create New Election</Typography>
+                <TextField
+                  label="Election Title"
+                  variant="outlined"
+                  fullWidth
+                  value={newElectionTitle}
+                  onChange={(e) => setNewElectionTitle(e.target.value)}
+                  sx={{ marginBottom: 2 }}
                 />
-              </ListItem>
-            ))
-          ) : (
-            <ListItem>
-              <ListItemText primary="No elections found." />
-            </ListItem>
-          )}
-        </List>
-      </Box>
-    </CardContent>
-  </Card>
-)}
-
+                <TextField
+                  label="Description"
+                  variant="outlined"
+                  fullWidth
+                  value={newElectionDescription}
+                  onChange={(e) => setNewElectionDescription(e.target.value)}
+                  sx={{ marginBottom: 2 }}
+                />
+                <TextField
+                  label=""
+                  variant="outlined"
+                  fullWidth
+                  type="datetime-local"
+                  value={newElectionStartDate}
+                  onChange={(e) => setNewElectionStartDate(e.target.value)}
+                  sx={{ marginBottom: 2 }}
+                />
+                <TextField
+                  label=""
+                  variant="outlined"
+                  fullWidth
+                  type="datetime-local"
+                  value={newElectionEndDate}
+                  onChange={(e) => setNewElectionEndDate(e.target.value)}
+                  sx={{ marginBottom: 2 }}
+                />
+                <Button variant="contained" onClick={createElection}>
+                  Create Election
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setOpenCreateElectionModal(false)}
+                >
+                  Cancel
+                </Button>
+              </Box>
+            )}
+            <Box className="card-list">
+              <Typography variant="body1" mt={2}>
+                Election List:
+              </Typography>
+              <List>
+                {elections.length > 0 ? (
+                  elections.map((election) => (
+                    <ListItem key={election._id}>
+                      <ListItemText
+                        primary={`${election.title} - Status: ${election.status}`}
+                      />
+                    </ListItem>
+                  ))
+                ) : (
+                  <ListItem>
+                    <ListItemText primary="No elections found." />
+                  </ListItem>
+                )}
+              </List>
+            </Box>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Voter Management Section */}
       {section === "voters" && (
