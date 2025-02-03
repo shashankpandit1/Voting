@@ -28,6 +28,7 @@ const LoginPage = () => {
   const [otpReceived, setOtpReceived] = useState(''); // Store OTP to show in the dialog
 
   const navigate = useNavigate();
+
   const handleIdentifierSubmit = async () => {
     if (!identifier) {
       setError('Please enter a valid identifier.');
@@ -36,20 +37,21 @@ const LoginPage = () => {
 
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      // Endpoint URL based on role
+      const response = await axios.post(`http://localhost:5000/api/${role === 'voter' ? 'auth/login' : 'admin/login'}`, {
         identifier,
       });
 
-      if (response.data.message === 'Voter not found') {
-        setError('Voter not found. Please check your identifier.');
+      if (response.data.message === `${role === 'voter' ? 'Voter' : 'Voting Officer'} not found`) {
+        setError(`${role === 'voter' ? 'Voter' : 'Voting Officer'} not found. Please check your identifier.`);
         return;
       }
 
-      // ✅ Store voter details in localStorage
-      localStorage.setItem('voterDetails', JSON.stringify({
+      // ✅ Store details in localStorage
+      localStorage.setItem(`${role}Details`, JSON.stringify({
         identifier: response.data.identifier,
         role: response.data.role,
-        voterId: response.data.voterId, // ✅ Ensure voterId is stored
+        ...(role === 'voter' ? { voterId: response.data.voterId } : { officerId: response.data.officerId }),
       }));
 
       setShowOtpField(true);
@@ -71,15 +73,15 @@ const LoginPage = () => {
   
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/verify-otp', {
+      // Endpoint URL based on role
+      const response = await axios.post(`http://localhost:5000/api/${role === 'voter' ? 'auth/verify-otp' : 'admin/verify-otp'}`, {
         identifier,
         otp,
       });
   
-      // Make sure the voterDetails are returned in the response
-      if (response.data.voterDetails) {
-        // Store the full voter details in localStorage
-        localStorage.setItem('voterDetails', JSON.stringify(response.data.voterDetails));
+      if (response.data[`${role}Details`]) {
+        // Store the full details in localStorage
+        localStorage.setItem(`${role}Details`, JSON.stringify(response.data[`${role}Details`]));
   
         setError('');
         // Redirect after successful login
@@ -102,7 +104,6 @@ const LoginPage = () => {
   const handleNewVoterRegister = () => {
     navigate('/register'); // Navigate to the registration page (adjust route if needed)
   };
-
 
   return (
     <Box
@@ -164,7 +165,7 @@ const LoginPage = () => {
           {!showOtpField ? (
             <>
               <TextField
-                label="Enter Mobile / Aadhar / Voter ID"
+                label={role === 'voter' ? "Enter Mobile / Aadhar / Voter ID" : "Enter ID or Mobile Number"}
                 variant="outlined"
                 fullWidth
                 value={identifier}
@@ -212,14 +213,16 @@ const LoginPage = () => {
             </Typography>
           )}
 
-          {/* New Voter Registration Link */}
-          <Button
-            variant="text"
-            onClick={handleNewVoterRegister}
-            sx={{ mt: 2 }}
-          >
-            New Voter? Register Here
-          </Button>
+          {/* New Voter Registration Link - Only show for 'voter' role */}
+          {role === 'voter' && (
+            <Button
+              variant="text"
+              onClick={handleNewVoterRegister}
+              sx={{ mt: 2 }}
+            >
+              New Voter? Register Here
+            </Button>
+          )}
 
           {/* Information Boxes inside the login card */}
           <Box sx={{ mt: 3 }}>

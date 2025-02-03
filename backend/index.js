@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const candidateRoutes = require('./routes/candidateRoutes');
 const pollRoutes = require('./routes/pollRoutes');
 const voteRoutes = require('./routes/voteRoutes');
+const votingOfficerRoutes = require('./routes/votingOfficerRoutes');
 
 dotenv.config(); // Load environment variables
 
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes);  // Route for authentication-related actions
 app.use('/api/candidates', candidateRoutes);  // Route for candidate-related actions
 app.use('/api/poll', pollRoutes);  
 app.use('/api/vote', voteRoutes);  
+app.use('/api/admin', votingOfficerRoutes);  // Route for voting officer-related actions
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })

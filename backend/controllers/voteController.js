@@ -17,6 +17,21 @@ const getVoter = async (req, res) => {
     }
 };
 
+const getAllVoter = async (req, res) => {
+    try {
+        const voters = await Voter.find(); // Query the database
+        
+        if (!voters) {
+            return res.status(404).json({ message: 'Voter not found' });
+        }
+        
+        return res.status(200).json(voters); // Respond with voter details
+    } catch (error) {
+        console.error('Error getting voter:', error);
+        return res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+};
+
 const castVote = async (req, res) => {
     try {
         const { voterId, candidateId } = req.body;
@@ -60,4 +75,4 @@ const castVote = async (req, res) => {
 };
 
 
-module.exports = { castVote ,getVoter};
+module.exports = { castVote ,getVoter, getAllVoter};

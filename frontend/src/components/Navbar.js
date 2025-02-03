@@ -8,30 +8,31 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Get user role from localStorage
+    // Check if the user is logged in and get the user role from localStorage
     const token = localStorage.getItem("token");
-    if (token) {
+    const role = localStorage.getItem("userRole");
+
+    if (token && role) {
       setIsLogged(true);
-      const role = localStorage.getItem("userRole");
       setUserRole(role);
-    }else{
+    } else {
       setIsLogged(false);
+      setUserRole(null);
     }
-    // const role = localStorage.getItem("userRole");
-    // setUserRole(role);
-  }, []);
+  }, []); // Empty dependency array ensures this only runs once on mount
 
   const handleLogout = () => {
-    localStorage.removeItem('token');  // Remove the token from localStorage
+    // Clear user authentication details from localStorage
+    localStorage.removeItem("token");
+    localStorage.removeItem("userRole");
     setIsLogged(false);
-    navigate('/login'); 
-    // localStorage.removeItem("userRole"); // Clear role on logout
-    // setUserRole(null);
-    // navigate("/login"); // Redirect to login page
+    setUserRole(null);
+    navigate("/login"); // Redirect to the login page
   };
 
   const handleLogin = () => {
-    navigate('/login');
+    // Navigate to the login page
+    navigate("/login");
   };
 
   return (
@@ -50,11 +51,6 @@ const Navbar = () => {
       </ul>
 
       {/* Show Login if not logged in, otherwise show Logout */}
-      {/* {userRole ? (
-        <button onClick={handleLogout} className="logout-btn">Logout</button>
-      ) : (
-        <Link to="/login" className="login-btn">Login</Link>
-      )} */}
       {isLogged ? (
         <button onClick={handleLogout} className="login-btn">Logout</button>
       ) : (
