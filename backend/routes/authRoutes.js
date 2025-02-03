@@ -11,4 +11,6 @@ router.post('/login', login);
 // OTP Verification Route - For verifying OTP and generating JWT token
 router.post('/verify-otp', verifyOtp);
 
+
+
 module.exports = router;

@@ -1,6 +1,22 @@
 const Voter = require('../models/Voter');
 const Candidate = require('../models/Candidates');
 
+const getVoter = async (req, res) => {
+    try {
+        const { id } = req.params; // Get voterId from URL params
+        const voter = await Voter.findOne({ voterId: id }); // Query the database
+        
+        if (!voter) {
+            return res.status(404).json({ message: 'Voter not found' });
+        }
+        
+        return res.status(200).json(voter); // Respond with voter details
+    } catch (error) {
+        console.error('Error getting voter:', error);
+        return res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+};
+
 const castVote = async (req, res) => {
     try {
         const { voterId, candidateId } = req.body;
@@ -9,8 +25,6 @@ const castVote = async (req, res) => {
 
         // Check if the voter exists
         const voter = await Voter.findOne({ voterId });
-        console.log("Voter found: ", voter);
-
         if (!voter) {
             return res.status(404).json({ message: 'Voter not found' });
         }
@@ -22,8 +36,6 @@ const castVote = async (req, res) => {
 
         // Check if the candidate exists
         const candidate = await Candidate.findById(candidateId);
-        console.log("Candidate found: ", candidate);
-
         if (!candidate) {
             return res.status(404).json({ message: 'Candidate not found' });
         }
@@ -39,11 +51,13 @@ const castVote = async (req, res) => {
         await voter.save();
         console.log("Updated voter: ", voter);
 
-        res.status(200).json({ message: 'Vote cast successfully', candidate });
+        // Return the updated voter details along with the candidate
+        res.status(200).json({ message: 'Vote cast successfully', voter, candidate });
     } catch (error) {
         console.error('Error casting vote:', error);
         res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 };
 
-module.exports = { castVote };
+
+module.exports = { castVote ,getVoter};

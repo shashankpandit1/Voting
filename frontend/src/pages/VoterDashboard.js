@@ -34,7 +34,6 @@ const VoterDashboard = () => {
     }
   }, [navigate]);
 
-
   useEffect(() => {
     fetch('http://localhost:5000/api/poll/getPoll')
       .then((res) => res.json())
@@ -42,14 +41,14 @@ const VoterDashboard = () => {
       .catch((error) => console.error('Error fetching polls:', error));
   }, []);
 
-
+  // ✅ Updated handleVote function to navigate with voterId
   const handleVote = () => {
     console.log('Voter ID:', voterId);
     if (!voterId) {
       console.error('No voterId found!');
       return;
     }
-    navigate(`/vote`, { state: { voterId } });
+    navigate(`/vote`, { state: { voterId } }); // Pass voterId to the Cast Vote page
   };
 
   return (
@@ -102,7 +101,7 @@ const VoterDashboard = () => {
                     <CardActions className="card-actions">
                       <Button
                         variant="contained"
-                        onClick={() => handleVote()}
+                        onClick={handleVote} // Trigger vote action
                         className="vote-button"
                       >
                         Vote Now

@@ -68,24 +68,24 @@ const LoginPage = () => {
       setError('Please enter a valid 6-digit OTP.');
       return;
     }
-
+  
     setLoading(true);
     try {
       const response = await axios.post('http://localhost:5000/api/auth/verify-otp', {
         identifier,
         otp,
       });
-
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-
-        const voterDetails = JSON.parse(localStorage.getItem('voterDetails'));
-        voterDetails.voterId = response.data.voterId; // ✅ Ensure voterId is stored
-        localStorage.setItem('voterDetails', JSON.stringify(voterDetails));
-
+  
+      // Make sure the voterDetails are returned in the response
+      if (response.data.voterDetails) {
+        // Store the full voter details in localStorage
+        localStorage.setItem('voterDetails', JSON.stringify(response.data.voterDetails));
+  
         setError('');
-        // ✅ Redirect after login
+        // Redirect after successful login
         navigate(role === 'voter' ? '/voter-dashboard' : '/officer-dashboard');
+      } else {
+        setError('Invalid or expired OTP. Please try again.');
       }
     } catch (err) {
       setError('Invalid or expired OTP. Please try again.');
@@ -93,12 +93,16 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
-
-
+  
   // Close OTP dialog
   const handleOtpDialogClose = () => {
     setOtpDialogOpen(false);
   };
+
+  const handleNewVoterRegister = () => {
+    navigate('/register'); // Navigate to the registration page (adjust route if needed)
+  };
+
 
   return (
     <Box
@@ -207,6 +211,15 @@ const LoginPage = () => {
               {error}
             </Typography>
           )}
+
+          {/* New Voter Registration Link */}
+          <Button
+            variant="text"
+            onClick={handleNewVoterRegister}
+            sx={{ mt: 2 }}
+          >
+            New Voter? Register Here
+          </Button>
 
           {/* Information Boxes inside the login card */}
           <Box sx={{ mt: 3 }}>

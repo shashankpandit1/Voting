@@ -119,15 +119,17 @@ const verifyOtp = async (req, res) => {
     voter.otpExpires = null;
     await voter.save();
 
-    // Generate JWT token for the voter
-    const token = jwt.sign(
-      { voterId: voter.voterId, mobile: voter.mobile, aadhar: voter.aadhar },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
-
-    // Respond with success and JWT token
-    res.status(200).json({ message: "Login successful", token });
+    // Respond with the voter details
+    res.status(200).json({
+      message: "Login successful",
+      voterDetails: {
+        name: voter.name,
+        mobile: voter.mobile,
+        voterId: voter.voterId,
+        aadhar: voter.aadhar, // Include other fields as needed
+        role: voter.role, // Include role if needed
+      },
+    });
   } catch (error) {
     console.error(error);
     res
@@ -135,6 +137,7 @@ const verifyOtp = async (req, res) => {
       .json({ message: "Error during OTP verification", error: error.message });
   }
 };
+
 
 module.exports = {
   register,
